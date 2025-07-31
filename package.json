@@ -1,0 +1,14 @@
+{
+  "name": "clinicchat",
+  "private": true,
+  "workspaces": ["frontend", "backend"],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
+    "test:unit": "npm run test:unit --workspaces",
+    "test:integration": "npm run test:integration --workspaces",
+    "test:e2e": "npm run test:e2e --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+} 
