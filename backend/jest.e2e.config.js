@@ -1,5 +1,12 @@
 module.exports = {
-  preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['**/__tests__/**/*.e2e.test.ts'],
+  transform: {
+    '^.+\\.ts$': ['ts-jest', {}]
+  },
+  moduleFileExtensions: ['ts', 'js'],
+  collectCoverageFrom: [
+    'src/**/*.{ts,js}',
+    '!src/**/*.test.{ts,js}',
+  ],
 }; 
