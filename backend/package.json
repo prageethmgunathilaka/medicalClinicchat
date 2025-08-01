@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon src/index.ts",
+    "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest --config jest.unit.config.js",
     "test:integration": "jest --config jest.integration.config.js",
     "test:e2e": "jest --config jest.e2e.config.js"
