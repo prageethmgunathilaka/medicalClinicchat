@@ -4,9 +4,13 @@
   "workspaces": ["frontend", "backend"],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
+    "test": "node scripts/test-all.js",
     "test:unit": "npm run test:unit --workspaces",
     "test:integration": "npm run test:integration --workspaces",
-    "test:e2e": "npm run test:e2e --workspaces"
+    "test:e2e": "npm run test:e2e --workspaces",
+    "test:watch": "npm run test:unit --workspaces -- --watch",
+    "test:coverage": "npm run test:unit --workspaces -- --coverage",
+    "test:ci": "node scripts/test-all.js --skip-install"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"

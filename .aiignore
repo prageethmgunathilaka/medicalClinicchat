@@ -1,0 +1,83 @@
+# AI Ignore - Prevent token consumption for these files/patterns
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.cache
+dev-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test artifacts and reports (regenerated on each run)
+test-results/
+playwright-report/
+coverage/
+.nyc_output/
+junit.xml
+
+# Build outputs and dependencies (can be regenerated)
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+.output/
+
+# IDE and editor files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Package manager locks (large and not usually edited)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment files (may contain sensitive data)
+.env
+.env.local
+.env.*.local
+
+# Database files
+*.sqlite
+*.db
+*.sql
+
+# Large binary files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.exe
+*.dmg
+*.iso
+
+# Video and image assets (if large)
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+
+# Documentation that doesn't need AI analysis
+CHANGELOG.md
+LICENSE
+*.pdf 

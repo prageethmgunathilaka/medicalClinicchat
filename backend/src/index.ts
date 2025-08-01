@@ -23,12 +23,20 @@ app.get('/health', (_req, res) => {
 });
 
 app.post('/api/message', async (req, res) => {
-  const { message, lang } = req.body;
   try {
+    // Validate request body exists and has required fields
+    if (!req.body || typeof req.body !== 'object' || 
+        !req.body.hasOwnProperty('message') || 
+        req.body.message === null || req.body.message === undefined ||
+        typeof req.body.message !== 'string') {
+      return res.status(500).json({ reply: 'Sorry, there was an error.' });
+    }
+    
+    const { message, lang } = req.body;
     const reply = await getAIReply(message, lang);
     res.json({ reply });
   } catch (err) {
-    res.json({ reply: 'Sorry, there was an error.' });
+    res.status(500).json({ reply: 'Sorry, there was an error.' });
   }
 });
 

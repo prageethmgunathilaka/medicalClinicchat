@@ -9,22 +9,38 @@ interface Message {
   text: string;
 }
 
-const socket: Socket = io('http://localhost:4000');
-
 export default function App() {
   const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
+  const socketRef = useRef<Socket | null>(null);
+
+  // Load saved language on component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('clinicChatLanguage');
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'si')) {
+      i18n.changeLanguage(savedLanguage);
+    }
+  }, [i18n]);
 
   useEffect(() => {
+    // Initialize socket connection
+    socketRef.current = io('http://localhost:4000');
+    const socket = socketRef.current;
+
     socket.on('chat message', (msg: Message) => {
       setMessages((msgs) => [...msgs, msg]);
-      setLoading(false);
+      // Only stop loading when bot responds
+      if (msg.sender === 'bot') {
+        setLoading(false);
+      }
     });
+
     return () => {
       socket.off('chat message');
+      socket.disconnect();
     };
   }, []);
 
@@ -38,8 +54,14 @@ export default function App() {
     e.preventDefault();
     if (!input.trim()) return;
     setLoading(true);
-    socket.emit('chat message', input, i18n.language);
+    socketRef.current?.emit('chat message', input, i18n.language);
     setInput('');
+  };
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLanguage = e.target.value;
+    i18n.changeLanguage(newLanguage);
+    localStorage.setItem('clinicChatLanguage', newLanguage);
   };
 
   return (
@@ -50,7 +72,7 @@ export default function App() {
           <select
             className="lang-switcher"
             value={i18n.language}
-            onChange={e => i18n.changeLanguage(e.target.value)}
+            onChange={handleLanguageChange}
             aria-label="Select language"
           >
             <option value="en">English</option>
