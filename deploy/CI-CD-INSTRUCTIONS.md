@@ -39,7 +39,7 @@ curl -o ci-cd-setup.sh https://raw.githubusercontent.com/prageethmgunathilaka/me
 | `EC2_HOST` | `3.88.26.16` | Your EC2 public IP |
 | `EC2_USER` | `ec2-user` | SSH username |
 | `EC2_SSH_KEY` | `[Private key content]` | Content of your `.pem` file |
-| `OPENAI_API_KEY` | `sk-your-key-here` | Your OpenAI API key |
+| `OPENAI_API_KEY` | `sk-your-key-here` | Your OpenAI API key (for testing & deployment) |
 
 #### How to get EC2_SSH_KEY:
 **Windows:**
@@ -66,7 +66,7 @@ Copy the **entire content** including `-----BEGIN RSA PRIVATE KEY-----` and `---
    - ✅ Install dependencies
    - ✅ Run unit tests
    - ✅ Run integration tests
-   - ✅ Run E2E tests
+   - ✅ Run E2E tests (with OpenAI API access)
    - ✅ Build applications
 
 2. **Deploy Stage** (main branch only):

@@ -24,6 +24,8 @@ jobs:
       run: npm ci
     
     - name: Run tests
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: npm run test:ci
     
     - name: Build applications
