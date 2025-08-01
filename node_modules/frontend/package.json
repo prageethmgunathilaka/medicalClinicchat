@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "vite build",
+    "preview": "vite preview",
     "dev": "vite",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "npx --yes vitest run",
