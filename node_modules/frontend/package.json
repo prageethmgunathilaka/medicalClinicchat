@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npx vite",
+    "dev": "vite",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "npx vitest run",
-    "test:integration": "npx vitest run --config vitest.integration.config.ts",
-    "test:e2e": "npx playwright test"
+    "test:unit": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "i18next": "^23.0.0",
