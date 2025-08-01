@@ -27,7 +27,10 @@ export default function App() {
 
   useEffect(() => {
     // Initialize socket connection
-    socketRef.current = io('http://localhost:4000');
+    const socketUrl = import.meta.env.PROD 
+      ? window.location.origin // Production: same origin
+      : 'http://localhost:4000'; // Development: localhost
+    socketRef.current = io(socketUrl);
     const socket = socketRef.current;
 
     socket.on('chat message', (msg: Message) => {
