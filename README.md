@@ -88,3 +88,4 @@ clinicchat/
 
 ## License
 MIT Trigger deployment test
+Test after server setup - CI/CD ready!
