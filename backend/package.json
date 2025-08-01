@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "pretest": "npm install",
     "test": "npm run test:unit && npm run test:integration",
