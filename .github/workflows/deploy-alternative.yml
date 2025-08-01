@@ -1,0 +1,86 @@
+name: Deploy Medical Clinic Chat to AWS EC2 (Alternative)
+
+on:
+  workflow_dispatch:  # Manual trigger only
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to EC2 (Alternative SSH)
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies and build
+      run: |
+        npm ci
+        npm run build
+    
+    - name: Setup SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+    
+    - name: Deploy via SSH
+      run: |
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+        
+        # Navigate to application directory
+        cd /home/ec2-user/medical-clinic-chat || {
+          echo "First time deployment - cloning repository"
+          cd /home/ec2-user
+          git clone https://github.com/prageethmgunathilaka/medicalClinicchat.git medical-clinic-chat
+          cd medical-clinic-chat
+        }
+        
+        # Pull latest changes
+        echo "🔄 Pulling latest changes..."
+        git pull origin main
+        
+        # Install dependencies and build
+        echo "📦 Installing dependencies..."
+        npm install
+        
+        echo "🏗️ Building applications..."
+        npm run build
+        
+        # Deploy frontend
+        echo "🌐 Deploying frontend..."
+        sudo rm -rf /var/www/medical-clinic-chat/*
+        sudo cp -r frontend/dist/* /var/www/medical-clinic-chat/
+        sudo chown -R nginx:nginx /var/www/medical-clinic-chat
+        
+        # Update environment variables  
+        echo "🔧 Updating environment variables..."
+        echo "NODE_ENV=production" > backend/.env
+        echo "PORT=4000" >> backend/.env
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> backend/.env
+        
+        # Restart backend service
+        echo "🔄 Restarting backend service..."
+        pm2 restart medical-clinic-chat-backend || {
+          echo "🚀 Starting backend for first time..."
+          cp deploy/ecosystem.config.js .
+          pm2 start ecosystem.config.js
+          pm2 save
+        }
+        
+        # Restart nginx
+        echo "🌐 Restarting web server..."
+        sudo systemctl reload nginx
+        
+        # Check services
+        echo "✅ Deployment complete!"
+        echo "📊 Service status:"
+        pm2 status
+        
+        echo "🌐 App URL: http://${{ secrets.EC2_HOST }}"
+        ENDSSH 
