@@ -3,6 +3,7 @@
   "private": true,
   "workspaces": ["frontend", "backend"],
   "scripts": {
+    "build": "npm run build --workspaces",
     "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
     "test": "node scripts/test-all.js",
     "test:unit": "npm run test:unit --workspaces",
