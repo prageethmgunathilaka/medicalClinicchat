@@ -89,3 +89,5 @@ clinicchat/
 ## License
 MIT Trigger deployment test
 Test after server setup - CI/CD ready!
+Test after security group fix
+Test after security group fix attempt
